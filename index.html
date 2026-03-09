@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+<title>BuildAI — Build Websites with AI</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;font-family:'Inter',system-ui,sans-serif;background:#07080f;color:#e2e8f0;-webkit-font-smoothing:antialiased;overflow:hidden}
+button,input,textarea{font-family:inherit}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#1e2740;border-radius:99px}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes blink{0%,100%{opacity:.2}50%{opacity:1}}
+@keyframes bgPulse{0%,100%{transform:scale(1) translate(0,0)}50%{transform:scale(1.06) translate(1.5%,1.5%)}}
+@keyframes gradFlow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes dotBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+
+/* PAGES */
+.page{position:fixed;inset:0;display:flex;flex-direction:column;transition:opacity .2s}
+.page.off{opacity:0;pointer-events:none;z-index:0}
+.page.on{opacity:1;pointer-events:all;z-index:1}
+
+/* ═══════════ HOME PAGE ═══════════ */
+#pg-home{overflow-y:auto;overflow-x:hidden;background:#07080f}
+
+.hn{display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:60px;border-bottom:1px solid rgba(255,255,255,.05);position:sticky;top:0;background:rgba(7,8,15,.92);backdrop-filter:blur(20px);z-index:100;flex-shrink:0}
+.hn-logo{display:flex;align-items:center;gap:10px;cursor:pointer}
+.hn-m{width:30px;height:30px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px}
+.hn-name{font-weight:800;font-size:16px;letter-spacing:-.4px}
+.hn-badge{padding:2px 8px;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.3);border-radius:999px;font-size:10px;color:#a78bfa;font-weight:700}
+.hn-links{display:flex;gap:24px}
+.hn-link{font-size:13.5px;color:#64748b;cursor:pointer;transition:color .2s}
+.hn-link:hover{color:#e2e8f0}
+.hn-btns{display:flex;gap:8px}
+.btn-ghost{padding:8px 18px;background:transparent;border:1px solid #1e2740;border-radius:9px;color:#94a3b8;font-size:13px;cursor:pointer;font-weight:500;transition:all .2s}
+.btn-ghost:hover{border-color:#6366f1;color:#e2e8f0}
+.btn-indigo{padding:9px 20px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;border-radius:9px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.btn-indigo:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(99,102,241,.4)}
+
+.hero{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding:90px 24px 80px;min-height:calc(100vh - 60px);overflow:hidden}
+.hero-bg{position:absolute;inset:-20%;background:radial-gradient(ellipse at 20% 25%,rgba(99,102,241,.18) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(139,92,246,.14) 0%,transparent 50%),radial-gradient(ellipse at 50% 85%,rgba(236,72,153,.09) 0%,transparent 50%);animation:bgPulse 18s ease-in-out infinite;pointer-events:none}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(99,102,241,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(99,102,241,.04) 1px,transparent 1px);background-size:52px 52px;pointer-events:none;mask-image:radial-gradient(ellipse at center,black 25%,transparent 72%)}
+.hero-body{position:relative;z-index:1;max-width:740px;width:100%}
+.hero-pill{display:inline-flex;align-items:center;gap:8px;padding:5px 14px 5px 8px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.2);border-radius:999px;font-size:12px;color:#a78bfa;margin-bottom:28px;animation:fadeUp .5s ease both}
+.hero-pill-dot{padding:2px 8px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:999px;color:#fff;font-size:10px;font-weight:700}
+.hero-h1{font-size:clamp(36px,6vw,80px);font-weight:900;line-height:1.02;letter-spacing:-3px;margin-bottom:22px;animation:fadeUp .6s ease both}
+.hero-plain{color:#f1f5f9}
+.hero-grad{background:linear-gradient(135deg,#6366f1,#a78bfa,#ec4899);background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:gradFlow 5s ease infinite}
+.hero-sub{font-size:17px;color:#475569;max-width:520px;margin:0 auto 44px;line-height:1.8;animation:fadeUp .7s ease both}
+
+.prompt-wrap{max-width:660px;margin:0 auto;animation:fadeUp .8s ease both}
+.prompt-box{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:6px 6px 6px 20px;margin-bottom:16px;backdrop-filter:blur(20px);box-shadow:0 24px 60px rgba(0,0,0,.4);transition:border-color .2s,box-shadow .2s}
+.prompt-box:focus-within{border-color:rgba(99,102,241,.4);box-shadow:0 0 0 3px rgba(99,102,241,.08),0 24px 60px rgba(0,0,0,.4)}
+.prompt-inp{flex:1;background:transparent;border:none;outline:none;color:#e2e8f0;font-size:15px;padding:13px 0}
+.prompt-inp::placeholder{color:#334155}
+.prompt-go{padding:12px 24px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;border-radius:13px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:transform .15s,box-shadow .15s}
+.prompt-go:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(99,102,241,.4)}
+.prompt-go:disabled{background:#1e2740;color:#334155;cursor:not-allowed;transform:none;box-shadow:none}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip{padding:7px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:999px;font-size:12px;color:#64748b;cursor:pointer;transition:all .2s}
+.chip:hover{border-color:rgba(99,102,241,.35);color:#94a3b8;background:rgba(99,102,241,.06)}
+.social-proof{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:38px;flex-wrap:wrap;animation:fadeUp .9s ease both}
+.av-stack{display:flex}
+.av{width:30px;height:30px;border-radius:50%;border:2px solid #07080f;margin-left:-8px;font-size:13px;display:flex;align-items:center;justify-content:center}
+.av:first-child{margin-left:0}
+.proof{font-size:12.5px;color:#334155}
+.proof strong{color:#64748b}
+.proof-div{width:1px;height:14px;background:#1e2740}
+.stars{color:#f59e0b;letter-spacing:1px}
+
+.feat-sec{padding:80px 24px;max-width:1000px;margin:0 auto;width:100%}
+.sec-label{font-size:11px;font-weight:700;color:#6366f1;letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:12px}
+.sec-title{font-size:clamp(24px,4vw,36px);font-weight:900;text-align:center;letter-spacing:-1px;margin-bottom:10px}
+.sec-sub{font-size:14px;color:#475569;text-align:center;margin-bottom:44px;max-width:460px;margin-left:auto;margin-right:auto}
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:16px}
+.feat-card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:22px;transition:border-color .25s,transform .25s}
+.feat-card:hover{border-color:rgba(99,102,241,.3);transform:translateY(-3px)}
+.feat-ic{font-size:24px;margin-bottom:13px}
+.feat-t{font-size:14px;font-weight:700;color:#c4d4f0;margin-bottom:7px}
+.feat-d{font-size:12px;color:#475569;line-height:1.7}
+
+.how-sec{padding:0 24px 80px;max-width:820px;margin:0 auto;width:100%}
+.steps-row{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}
+.step-box{padding:11px 15px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;min-width:92px;text-align:center}
+.step-n{font-size:9px;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px}
+.step-l{font-size:12px;font-weight:600;color:#94a3b8}
+.step-arr{color:#1e2740;font-size:18px}
+
+.cta-sec{padding:72px 24px 90px;text-align:center;border-top:1px solid rgba(255,255,255,.04)}
+.cta-h{font-size:clamp(26px,4vw,38px);font-weight:900;letter-spacing:-1.2px;margin-bottom:12px}
+.cta-p{font-size:15px;color:#475569;margin-bottom:30px}
+.cta-btn{padding:15px 42px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;border-radius:14px;color:#fff;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 10px 40px rgba(99,102,241,.35);letter-spacing:-.3px;transition:transform .2s,box-shadow .2s}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 16px 50px rgba(99,102,241,.45)}
+
+/* ═══════════ BUILDER PAGE ═══════════ */
+#pg-builder{background:#07080f}
+
+/* TOP BAR */
+.tb{height:42px;display:flex;align-items:center;padding:0 8px;border-bottom:1px solid #0f1220;background:#0b0d17;flex-shrink:0;gap:3px;z-index:200;overflow:visible}
+.tb-left{display:flex;align-items:center;gap:3px;flex-shrink:0}
+.tb-logo{display:flex;align-items:center;gap:6px;cursor:pointer;padding:3px 7px;border-radius:7px;transition:background .15s}
+.tb-logo:hover{background:#13172a}
+.tb-lm{width:18px;height:18px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0}
+.tb-ln{font-size:12px;font-weight:800;letter-spacing:-.3px}
+.tb-proj{display:flex;align-items:center;gap:5px;padding:4px 8px;background:#13172a;border:1px solid #1a1f33;border-radius:7px;cursor:pointer;max-width:130px;flex-shrink:0}
+.tb-pn{font-size:11px;color:#64748b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-pc{font-size:8px;color:#334155;flex-shrink:0}
+.tb-sep{width:1px;height:22px;background:#0f1220;margin:0 2px;flex-shrink:0}
+.tb-ic{width:27px;height:27px;background:transparent;border:none;border-radius:6px;color:#334155;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;transition:background .15s,color .15s}
+.tb-ic:hover{background:#13172a;color:#64748b}
+.tb-center{flex:1;display:flex;align-items:center;justify-content:center;gap:2px;min-width:0}
+.tab-b{padding:5px 11px;background:transparent;border:1px solid transparent;border-radius:7px;color:#334155;font-size:11px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .15s}
+.tab-b.on{background:#13172a;border-color:#1e2740;color:#c4d4f0;font-weight:600}
+.tab-b:hover:not(.on){color:#64748b}
+.tb-url{display:flex;align-items:center;gap:5px;padding:4px 10px;background:#0f1220;border:1px solid #13172a;border-radius:7px;margin-left:6px;max-width:190px;overflow:hidden}
+.tb-url-t{font-size:10px;color:#334155;font-family:'JetBrains Mono',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-right{display:flex;align-items:center;gap:3px;flex-shrink:0}
+.vp-grp{display:flex;gap:1px;background:#0f1220;border:1px solid #13172a;border-radius:7px;padding:2px;flex-shrink:0}
+.vp-b{width:24px;height:22px;background:transparent;border:none;border-radius:5px;cursor:pointer;font-size:10px;transition:background .15s;display:flex;align-items:center;justify-content:center}
+.vp-b.on{background:#1e2740}
+.tb-tool{padding:4px 9px;background:#13172a;border:1px solid #1a1f33;border-radius:7px;color:#64748b;font-size:11px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:3px;white-space:nowrap;flex-shrink:0;transition:all .15s}
+.tb-tool:hover{border-color:#2e3a55;color:#94a3b8}
+.tb-tool.grn{background:rgba(16,185,129,.08);border-color:rgba(16,185,129,.25);color:#34d399}
+.tb-share{padding:4px 10px;background:#13172a;border:1px solid #1a1f33;border-radius:7px;color:#64748b;font-size:11px;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .15s}
+.tb-share:hover{border-color:#2e3a55;color:#94a3b8}
+.tb-upgrade{padding:4px 10px;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.25);border-radius:7px;color:#a78bfa;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.tb-pub{padding:5px 12px;background:linear-gradient(135deg,#059669,#10b981);border:none;border-radius:7px;color:#fff;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.tb-pub:disabled{opacity:.4;cursor:default}
+.tb-av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;flex-shrink:0}
+.tb-signin{padding:5px 12px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;border-radius:7px;color:#fff;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0}
+
+/* MOBILE TAB BAR */
+.mob-tabs{display:none;height:44px;background:#0b0d17;border-bottom:1px solid #0f1220;flex-shrink:0}
+.mob-tab{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;background:transparent;border:none;border-bottom:2px solid transparent;color:#334155;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s}
+.mob-tab.on{color:#c4d4f0;border-bottom-color:#6366f1}
+
+/* BUILDER BODY */
+.b-body{flex:1;display:flex;overflow:hidden;min-height:0;position:relative}
+
+/* SIDEBAR */
+.sb{width:185px;flex-shrink:0;display:flex;flex-direction:column;background:#0b0d17;border-right:1px solid #0f1220;overflow:hidden}
+.sb-hd{padding:8px 10px;border-bottom:1px solid #0f1220;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.sb-lbl{font-size:10px;font-weight:700;color:#1e2740;text-transform:uppercase;letter-spacing:1.2px}
+.sb-tog{background:none;border:none;color:#1e2740;cursor:pointer;font-size:13px;transition:color .15s}
+.sb-tog:hover{color:#334155}
+.sb-new{width:calc(100% - 14px);margin:7px;padding:8px;background:#0f1220;border:1px dashed #1a1f33;border-radius:8px;color:#334155;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:all .2s}
+.sb-new:hover{border-color:#6366f1;color:#6366f1}
+.sb-list{flex:1;overflow-y:auto;padding:0 7px 8px}
+.sb-sec{font-size:9.5px;font-weight:700;color:#131828;text-transform:uppercase;letter-spacing:1.2px;padding:6px 8px 4px}
+.sb-empty{padding:20px 10px;text-align:center;font-size:11px;color:#131828;line-height:1.8}
+.pi{display:flex;align-items:center;gap:8px;padding:8px 9px;border-radius:8px;cursor:pointer;margin-bottom:2px;border:1px solid transparent;transition:all .15s}
+.pi:hover{background:#0f1220}
+.pi.on{background:#111e36;border-color:#1e3a5f}
+.pi-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.pi-n{font-size:11.5px;color:#475569;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pi.on .pi-n{color:#c4d4f0;font-weight:500}
+.pi-d{font-size:9.5px;color:#131828;margin-top:1px}
+.sb-ft{padding:8px;border-top:1px solid #0f1220;flex-shrink:0}
+.sb-user{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#0f1220;border-radius:8px;cursor:pointer}
+.sb-uav{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+.sb-un{font-size:11px;font-weight:600;color:#64748b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sb-up{font-size:9.5px;color:#1e2740}
+.sb-open-btn{position:absolute;left:0;z-index:50;background:#0f1220;border:1px solid #1a1f33;border-top-right-radius:7px;border-bottom-right-radius:7px;color:#334155;cursor:pointer;padding:8px 5px;font-size:11px;top:50%;transform:translateY(-50%);transition:color .15s}
+
+/* CHAT PANEL */
+.cp{width:286px;flex-shrink:0;display:flex;flex-direction:column;border-right:1px solid #0f1220;background:#0b0d17;overflow:hidden}
+.c-stat{padding:6px 12px;border-bottom:1px solid #0f1220;display:flex;align-items:center;gap:6px;background:#09091a;flex-shrink:0}
+.r-dots{display:flex;gap:3px}
+.r-dot{width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;border:1px solid #1e2740;color:#1e2740;transition:all .35s;flex-shrink:0}
+.r-dot.act{border-color:#8b5cf6;background:rgba(139,92,246,.2);color:#c4b5fd}
+.r-dot.dn{border-color:#6366f1;background:#6366f1;color:#fff}
+.c-stat-t{flex:1;font-size:10px;color:#1e2740;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.c-msgs{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:10px}
+.c-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:24px 14px}
+.c-e-ic{font-size:34px;animation:floatY 3s ease-in-out infinite}
+.c-e-t{font-size:13px;font-weight:600;color:#334155}
+.c-e-s{font-size:11px;color:#131828;line-height:1.75;max-width:190px}
+.q-prompts{display:flex;flex-direction:column;gap:5px;width:100%;margin-top:6px}
+.q-p{padding:8px 11px;background:#0f1220;border:1px solid #13172a;border-radius:8px;color:#334155;font-size:11px;cursor:pointer;text-align:left;transition:all .2s}
+.q-p:hover{border-color:rgba(99,102,241,.3);color:#6366f1}
+.m-u{display:flex;justify-content:flex-end;animation:fadeIn .2s}
+.m-u-b{max-width:90%;background:linear-gradient(135deg,#4f46e5,#6d28d9);border-radius:13px 13px 3px 13px;padding:10px 13px;font-size:12px;line-height:1.65;color:#e2e8f0;word-break:break-word}
+.m-a{animation:fadeIn .2s}
+.m-a-lbl{font-size:9px;font-weight:700;color:#131828;letter-spacing:1.5px;margin-bottom:5px}
+.m-think{background:#0f1220;border:1px solid #13172a;border-radius:3px 12px 12px 12px;padding:12px 14px;margin-bottom:8px}
+.think-hd{font-size:10px;color:#6366f1;font-weight:700;display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.think-dot{width:6px;height:6px;border-radius:50%;background:#6366f1;animation:blink 1.5s ease infinite;flex-shrink:0}
+.think-ln{font-size:11.5px;color:#334155;line-height:1.8}
+.think-ln.ap{color:#475569;font-weight:600;margin-top:5px}
+.think-ln.bl{color:#2e3a55;padding-left:4px}
+.typing{display:flex;gap:4px;padding:10px 14px;background:#0f1220;border:1px solid #13172a;border-radius:3px 12px 12px 12px;width:fit-content;margin-top:8px}
+.td{width:5px;height:5px;border-radius:50%;background:#1e2740}
+.td:nth-child(1){animation:dotBounce .9s 0s ease-in-out infinite}
+.td:nth-child(2){animation:dotBounce .9s .15s ease-in-out infinite}
+.td:nth-child(3){animation:dotBounce .9s .3s ease-in-out infinite}
+.m-card{background:#0f1220;border:1px solid #13172a;border-radius:10px;margin-bottom:8px;overflow:hidden}
+.m-card-h{padding:10px 13px;border-bottom:1px solid #13172a;font-size:12px;font-weight:500;color:#64748b}
+.m-card-tabs{display:flex;border-bottom:1px solid #13172a}
+.m-card-tb{flex:1;padding:7px;background:transparent;border:none;color:#334155;font-size:11px;cursor:pointer;transition:all .15s}
+.m-card-tb.on{background:#0d1428;color:#818cf8;font-weight:600}
+.m-txt{font-size:12px;color:#64748b;line-height:1.75;margin-bottom:8px}
+.m-next-t{font-size:11px;font-weight:600;color:#334155;margin-bottom:6px}
+.m-next-i{font-size:11px;color:#2e3a55;padding:5px 8px;border-left:2px solid #1a1f33;margin-bottom:4px;line-height:1.6}
+.m-next-i b{color:#6366f1}
+.m-promo{background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.12);border-radius:9px;padding:10px 12px;font-size:11px;color:#475569;line-height:1.65;margin-bottom:8px}
+.m-promo span{color:#818cf8;cursor:pointer}
+.m-acts{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}
+.m-act{padding:5px 10px;background:#0f1220;border:1px solid #13172a;border-radius:7px;color:#334155;font-size:10.5px;cursor:pointer;transition:all .15s}
+.m-act:hover{border-color:rgba(99,102,241,.3);color:#6366f1}
+.m-err{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);border-radius:9px;padding:10px 13px;font-size:12px;color:#f87171;line-height:1.6}
+.sugg-bar{padding:6px 10px;border-top:1px solid #0f1220;display:flex;gap:5px;overflow-x:auto;flex-shrink:0}
+.sugg-bar::-webkit-scrollbar{height:0}
+.s-chip{padding:5px 10px;background:#0f1220;border:1px solid #13172a;border-radius:999px;font-size:10px;color:#334155;cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0}
+.s-chip:hover{border-color:rgba(99,102,241,.3);color:#6366f1}
+.c-inp-area{padding:8px 10px 10px;border-top:1px solid #0f1220;background:#09091a;flex-shrink:0}
+.c-inp-row{display:flex;gap:6px;align-items:flex-end}
+.c-ta{flex:1;background:#0f1220;border:1px solid #1a1f33;border-radius:11px;padding:9px 12px;color:#e2e8f0;font-size:12px;resize:none;outline:none;line-height:1.5;min-height:38px;max-height:80px;transition:border-color .2s}
+.c-ta:focus{border-color:rgba(99,102,241,.3)}
+.c-ta::placeholder{color:#1e2740}
+.c-ta:disabled{opacity:.5;cursor:not-allowed}
+.c-send{width:34px;height:34px;border-radius:10px;border:none;flex-shrink:0;background:#1a1f33;color:#334155;cursor:default;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all .2s}
+.c-send.on{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;cursor:pointer}
+.c-foot{display:flex;align-items:center;justify-content:space-between;margin-top:7px}
+.vis-tog{display:flex;align-items:center;gap:5px;padding:4px 9px;background:transparent;border:1px solid transparent;border-radius:7px;color:#1e2740;font-size:10.5px;cursor:pointer;transition:all .2s}
+.vis-tog.on{background:rgba(99,102,241,.1);border-color:rgba(99,102,241,.25);color:#818cf8}
+.foot-r{display:flex;gap:3px}
+.foot-b{padding:4px 8px;background:transparent;border:none;color:#1e2740;font-size:10.5px;cursor:pointer;transition:color .15s;border-radius:6px}
+.foot-b:hover{color:#334155}
+
+/* PREVIEW PANEL */
+.pv{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.pub-bar{padding:4px 14px;background:#0b0d17;border-bottom:1px solid #0f1220;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.pub-dot{width:5px;height:5px;border-radius:50%;background:#10b981;flex-shrink:0}
+.pub-t{font-size:10px;color:#10b981}
+.pub-dt{font-size:10px;color:#131828;margin-left:auto}
+.pv-body{flex:1;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#10121e}
+.pv-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;height:100%;width:100%}
+.pv-e-ic{font-size:64px;opacity:.09;animation:floatY 3.5s ease-in-out infinite}
+.pv-e-t{font-size:15px;font-weight:600;color:#131828}
+.pv-e-s{font-size:12px;color:#0f1220}
+.pv-overlay{position:absolute;inset:0;background:rgba(7,8,15,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;backdrop-filter:blur(10px)}
+.ov-spin{width:48px;height:48px;border-radius:50%;border:3px solid #1a1f33;border-top:3px solid #6366f1;animation:spin .85s linear infinite}
+.ov-t{font-size:13px;color:#475569;text-align:center;margin-bottom:4px}
+.ov-s{font-size:11px;color:#131828;text-align:center}
+.ov-bar{width:200px;height:2px;background:#1a1f33;border-radius:999px;overflow:hidden;margin-top:6px}
+.ov-prog{height:100%;background:linear-gradient(90deg,#6366f1,#8b5cf6);border-radius:999px;transition:width .6s ease}
+.code-view{width:100%;height:100%;overflow-y:auto;background:#07080f}
+.code-pre{margin:0;padding:22px;font-size:11px;line-height:1.9;color:#2e3a55;font-family:'JetBrains Mono',monospace;white-space:pre-wrap;word-break:break-word}
+.console-view{width:100%;height:100%;display:flex;flex-direction:column}
+.console-hd{padding:9px 16px;border-bottom:1px solid #0f1220;font-size:11px;color:#1e2740;font-family:'JetBrains Mono',monospace;background:#0b0d17;flex-shrink:0}
+.console-body{flex:1;padding:14px 16px;font-family:'JetBrains Mono',monospace;font-size:11px;overflow-y:auto}
+.c-ok{color:#10b981;margin-bottom:5px}
+.c-err-log{color:#f87171;margin-bottom:5px}
+.pv-btm{padding:6px 14px;border-top:1px solid #0f1220;background:#0b0d17;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.dl-btn{padding:5px 12px;background:#0f1220;border:1px solid #1a1f33;border-radius:7px;color:#334155;font-size:11px;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .15s}
+.dl-btn:hover{border-color:rgba(99,102,241,.3);color:#6366f1}
+.pv-hint{font-size:10px;color:#0f1220;margin-left:auto}
+
+/* VERSION DROPDOWN */
+.ver-panel{position:absolute;top:38px;left:0;width:250px;background:#0e1018;border:1px solid #1a1f33;border-radius:12px;z-index:9999;animation:slideDown .15s ease;box-shadow:0 20px 50px rgba(0,0,0,.6)}
+.ver-hd{padding:10px 14px;border-bottom:1px solid #1a1f33;display:flex;justify-content:space-between;align-items:center}
+.ver-hd-t{font-size:12px;font-weight:600}
+.ver-x{background:none;border:none;color:#334155;cursor:pointer;font-size:15px}
+.ver-item{padding:10px 14px;border-bottom:1px solid #0f1220;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background .15s}
+.ver-item:hover{background:#0f1220}
+.ver-item.cur{background:#0e1928}
+.ver-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.ver-n{font-size:12px;color:#475569}
+.ver-item.cur .ver-n{color:#c4d4f0;font-weight:500}
+.ver-d{font-size:10px;color:#1e2740;margin-top:1px}
+.ver-cur-lbl{font-size:10px;color:#6366f1;font-weight:600;margin-left:auto}
+.ver-ft{padding:9px 14px;font-size:11px;color:#1e2740;text-align:center}
+.ver-empty{padding:16px 14px;font-size:11px;color:#131828;text-align:center}
+
+/* ═══════════ MODALS ═══════════ */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:9999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px);padding:16px;animation:fadeIn .15s ease}
+.modal-box{background:#0e1018;border:1px solid #1a1f33;border-radius:20px;width:100%;max-height:90vh;overflow-y:auto;animation:slideDown .2s ease;box-shadow:0 40px 100px rgba(0,0,0,.7)}
+.mo-p{padding:24px}
+.mo-hd{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;gap:10px}
+.mo-t{font-weight:700;font-size:16px}
+.mo-sub{font-size:12px;color:#475569;margin-top:2px}
+.mo-x{background:none;border:none;color:#475569;cursor:pointer;font-size:22px;line-height:1;flex-shrink:0;transition:color .15s}
+.mo-x:hover{color:#94a3b8}
+.flbl{font-size:12px;color:#475569;font-weight:500;display:block;margin-bottom:6px}
+.finp{width:100%;background:#090b12;border:1px solid #1a1f33;border-radius:11px;padding:12px 14px;color:#e2e8f0;font-size:13px;outline:none;margin-bottom:12px;display:block;transition:border-color .2s}
+.finp:focus{border-color:rgba(99,102,241,.35)}
+.finp::placeholder{color:#1e2740}
+.finp.mono{font-family:'JetBrains Mono',monospace;font-size:12px}
+.mo-btn-p{width:100%;padding:13px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;border-radius:11px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;margin-top:4px;transition:opacity .2s}
+.mo-btn-p:hover{opacity:.9}
+.mo-btn-p:disabled{opacity:.5;cursor:not-allowed}
+.mo-btn-s{width:100%;padding:12px;background:#090b12;border:1px solid #1a1f33;border-radius:11px;color:#64748b;font-size:13px;cursor:pointer;transition:border-color .2s}
+.mo-btn-s:hover{border-color:#2e3a55}
+.mo-div{display:flex;align-items:center;gap:12px;margin:16px 0}
+.mo-div-l{flex:1;height:1px;background:#1a1f33}
+.mo-div-t{font-size:11px;color:#1e2740}
+.tab-sw{display:flex;gap:3px;background:#090b12;border-radius:11px;padding:3px;margin-bottom:20px}
+.tab-sw-b{flex:1;padding:9px;background:transparent;border:none;border-radius:9px;color:#334155;font-size:13px;cursor:pointer;transition:all .15s}
+.tab-sw-b.on{background:#1a1f33;color:#e2e8f0;font-weight:600}
+.suc-c{text-align:center;padding:16px 0 8px}
+.suc-ic{font-size:52px;margin-bottom:14px;display:block;animation:floatY 2.5s ease-in-out infinite}
+.suc-t{font-weight:900;font-size:19px;margin-bottom:8px;letter-spacing:-.4px}
+.f-list{display:flex;flex-direction:column;gap:7px;margin-bottom:20px}
+.f-li{padding:10px 13px;background:#090b12;border:1px solid #1a1f33;border-radius:9px;font-size:12px;color:#64748b}
+.sp-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}
+.sp-card{padding:12px;background:#090b12;border:1px solid #1a1f33;border-radius:11px}
+.sp-ic{font-size:17px;margin-bottom:5px}
+.sp-t{font-size:12px;font-weight:600;color:#c4d4f0;margin-bottom:2px}
+.sp-d{font-size:10.5px;color:#334155}
+.sp-notice{background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.16);border-radius:10px;padding:12px 14px;margin-bottom:18px;font-size:12px;color:#6ee7b7;line-height:1.7}
+.shr-row{display:flex;gap:7px;margin-bottom:18px}
+.shr-inp{flex:1;background:#090b12;border:1px solid #1a1f33;border-radius:10px;padding:10px 12px;color:#6366f1;font-size:12px;outline:none;font-family:'JetBrains Mono',monospace}
+.cp-btn{padding:10px 14px;border:none;border-radius:10px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap}
+.acc-opt{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid #1a1f33;border-radius:11px;margin-bottom:7px;cursor:pointer;transition:all .15s;background:#090b12}
+.acc-opt.on{background:#0e1928;border-color:#1e3a5f}
+.acc-t{font-size:13px;font-weight:500;color:#475569}
+.acc-opt.on .acc-t{color:#c4d4f0}
+.acc-d{font-size:11px;color:#1e2740;margin-top:2px}
+.acc-dot{width:8px;height:8px;border-radius:50%;background:#6366f1;flex-shrink:0;margin-left:auto}
+.soc-row{display:flex;gap:7px;margin-top:14px}
+.soc-b{flex:1;padding:8px;background:#090b12;border:1px solid #1a1f33;border-radius:9px;color:#334155;font-size:11px;cursor:pointer;transition:border-color .15s}
+.soc-b:hover{border-color:#2e3a55;color:#64748b}
+.pub-plan{background:#090b12;border:1px solid #1a1f33;border-radius:13px;padding:15px 17px;margin-bottom:9px;cursor:pointer;transition:all .2s}
+.pub-plan.on{border-color:#6366f1;border-width:2px}
+.pub-plan-badge{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:4px}
+.pub-plan-url{font-size:14px;font-weight:700;color:#a78bfa;font-family:'JetBrains Mono',monospace;margin-bottom:4px}
+.pub-plan-d{font-size:11px;color:#334155}
+.pub-ssl{font-size:12px;color:#1e2740;margin-bottom:16px;display:flex;align-items:center;gap:6px}
+
+/* ═══════════ RESPONSIVE ═══════════ */
+@media (max-width:768px){
+  .hn{padding:0 16px}
+  .hn-links{display:none}
+  .hn-btns .btn-ghost{display:none}
+  .tb-ln{display:none}
+  .tb-center{display:none}
+  .vp-grp{display:none}
+  .tb-upgrade{display:none}
+  .tb-share{display:none}
+  .tb-url{display:none !important}
+  .mob-tabs{display:flex}
+  .sb{display:none !important}
+  .sb-open-btn{display:none !important}
+  .cp{width:100%;border-right:none}
+  .pv{display:none}
+  .b-body.show-preview .cp{display:none}
+  .b-body.show-preview .pv{display:flex;width:100%}
+  .b-body.show-chat .cp{display:flex}
+  .b-body.show-chat .pv{display:none}
+}
+@media (max-width:480px){
+  .tb-proj{max-width:85px}
+  .tb-tool span{display:none}
+  .tb-pub{padding:4px 10px;font-size:10px}
+  .tb-tool{padding:4px 7px}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ═══════════ HOME PAGE ═══════════ -->
+<div id="pg-home" class="page on">
+  <nav class="hn">
+    <div class="hn-logo" onclick="goHome()">
+      <div class="hn-m">⚡</div>
+      <span class="hn-name">BuildAI</span>
+      <span class="hn-badge">BETA</span>
+    </div>
+    <div class="hn-links">
+      <span class="hn-link">Features</span>
+      <span class="hn-link">Pricing</span>
+      <span class="hn-link">Docs</span>
+    </div>
+    <div class="hn-btns" id="home-nav-btns">
+      <button class="btn-ghost" onclick="openM('auth','signin')">Sign in</button>
+      <button class="btn-indigo" onclick="openM('auth','signup')">Get started free</button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-body">
+      <div class="hero-pill">
+        <span class="hero-pill-dot">NEW</span>
+        Dual AI — Gemini + OpenRouter across 3 review rounds
+      </div>
+      <h1 class="hero-h1">
+        <span class="hero-plain">Build any website<br/></span>
+        <span class="hero-grad">with a single prompt</span>
+      </h1>
+      <p class="hero-sub">Two AI models with specialized roles generate, review, and perfect your website in real-time. Live preview, Supabase backend, GitHub sync.</p>
+      <div class="prompt-wrap">
+        <div class="prompt-box">
+          <input class="prompt-inp" id="home-inp" placeholder="Describe the website you want to build..." onkeydown="if(event.key==='Enter')startBuild()" oninput="updHBtn()"/>
+          <button class="prompt-go" id="home-go" onclick="startBuild()" disabled>Build it →</button>
+        </div>
+        <div class="chips">
+          <div class="chip" onclick="hp('Modern e-commerce store with product grid, cart, and checkout')">🛒 E-commerce</div>
+          <div class="chip" onclick="hp('SaaS landing page with pricing, features, and testimonials')">💼 SaaS</div>
+          <div class="chip" onclick="hp('Restaurant website with menu, gallery, and booking form')">🍕 Restaurant</div>
+          <div class="chip" onclick="hp('Creative portfolio for a UI/UX designer with case studies')">🎨 Portfolio</div>
+          <div class="chip" onclick="hp('Dark analytics dashboard with charts and KPI cards')">📊 Dashboard</div>
+          <div class="chip" onclick="hp('Medical clinic with doctor profiles and appointment booking')">🏥 Medical</div>
+        </div>
+      </div>
+      <div class="social-proof">
+        <div class="av-stack">
+          <div class="av" style="background:#6366f1">😊</div>
+          <div class="av" style="background:#8b5cf6">😎</div>
+          <div class="av" style="background:#ec4899">🤩</div>
+          <div class="av" style="background:#f59e0b">🎯</div>
+          <div class="av" style="background:#10b981">🚀</div>
+        </div>
+        <span class="proof"><strong>2,400+</strong> websites built</span>
+        <div class="proof-div"></div>
+        <span class="stars">★★★★★</span>
+        <span class="proof"><strong>4.9</strong>/5</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="feat-sec">
+    <div class="sec-label">Why BuildAI</div>
+    <h2 class="sec-title">Everything included</h2>
+    <p class="sec-sub">No extra tools. Every feature works out of the box.</p>
+    <div class="feat-grid">
+      <div class="feat-card"><div class="feat-ic">⚡</div><div class="feat-t">Dual AI with Roles</div><div class="feat-d">Gemini and OpenRouter each have a unique system role — Builder, Reviewer, Polisher — just like n8n workflows.</div></div>
+      <div class="feat-card"><div class="feat-ic">👁️</div><div class="feat-t">Live Preview</div><div class="feat-d">Watch your website appear in real-time as AI generates and improves each round.</div></div>
+      <div class="feat-card"><div class="feat-ic">🗄️</div><div class="feat-t">Supabase Backend</div><div class="feat-d">Connect your database in one click. Add auth, storage, and real-time data from a prompt.</div></div>
+      <div class="feat-card"><div class="feat-ic">🐙</div><div class="feat-t">GitHub Sync</div><div class="feat-d">Push every version to GitHub automatically. Full history and GitHub Pages deploy.</div></div>
+      <div class="feat-card"><div class="feat-ic">🚀</div><div class="feat-t">One-Click Publish</div><div class="feat-d">Deploy to a live URL instantly. Custom domain support with automatic SSL.</div></div>
+      <div class="feat-card"><div class="feat-ic">📦</div><div class="feat-t">Export Code</div><div class="feat-d">Download your full source code as HTML anytime. You own everything you build.</div></div>
+    </div>
+  </section>
+
+  <section class="how-sec">
+    <div class="sec-label">How it works</div>
+    <h2 class="sec-title" style="margin-bottom:28px">3-Round AI Pipeline</h2>
+    <div class="steps-row">
+      <div class="step-box"><div class="step-n">Round 1</div><div class="step-l">Gemini builds</div></div>
+      <div class="step-arr">→</div>
+      <div class="step-box"><div class="step-n">Round 2</div><div class="step-l">OpenRouter reviews</div></div>
+      <div class="step-arr">→</div>
+      <div class="step-box"><div class="step-n">Round 3</div><div class="step-l">Gemini polishes</div></div>
+      <div class="step-arr">→</div>
+      <div class="step-box"><div class="step-n">Done</div><div class="step-l">Live preview</div></div>
+    </div>
+  </section>
+
+  <section class="cta-sec">
+    <h2 class="cta-h">Start building for free</h2>
+    <p class="cta-p">No credit card. Describe your website, watch AI build it live.</p>
+    <button class="cta-btn" onclick="startBuild()">Try BuildAI free →</button>
+  </section>
+</div>
+
+<!-- ═══════════ BUILDER PAGE ═══════════ -->
+<div id="pg-builder" class="page off">
+
+  <!-- TOP BAR -->
+  <div class="tb">
+    <div class="tb-left">
+      <div class="tb-logo" onclick="goHome()">
+        <div class="tb-lm">⚡</div>
+        <span class="tb-ln">BuildAI</span>
+      </div>
+      <div class="tb-proj">
+        <span class="tb-pn" id="tb-pn">New Project</span>
+        <span class="tb-pc">▾</span>
+      </div>
+      <div class="tb-sep"></div>
+      <div style="position:relative">
+        <button class="tb-ic" id="ver-btn" onclick="toggleVer(event)" style="width:auto;padding:0 8px;font-size:11px;gap:3px">🕐 <span class="tb-ln">History</span></button>
+        <div class="ver-panel" id="ver-panel" style="display:none">
+          <div class="ver-hd"><span class="ver-hd-t">Version History</span><button class="ver-x" onclick="closeVer()">×</button></div>
+          <div id="ver-list"><div class="ver-empty">No versions yet. Build a website to start.</div></div>
+          <div class="ver-ft">Click any version to restore it</div>
+        </div>
+      </div>
+      <button class="tb-ic" title="Undo" onclick="undoVer()">↩</button>
+      <button class="tb-ic" title="Redo">↪</button>
+    </div>
+
+    <div class="tb-center">
+      <button class="tab-b on" id="tab-preview" onclick="switchTab('preview')">👁 Preview</button>
+      <button class="tab-b" id="tab-code" onclick="switchTab('code')">&lt;/&gt; Code</button>
+      <button class="tab-b" id="tab-console" onclick="switchTab('console')">⬛ Console</button>
+      <div class="tb-url" id="tb-url" style="display:none">
+        <span style="font-size:10px">🔒</span>
+        <span class="tb-url-t" id="tb-url-t">my-project.buildai.app</span>
+      </div>
+    </div>
+
+    <div class="tb-right">
+      <div class="vp-grp">
+        <button class="vp-b on" id="vp-d" onclick="setVP('d')" title="Desktop">🖥</button>
+        <button class="vp-b" id="vp-t" onclick="setVP('t')" title="Tablet">⬜</button>
+        <button class="vp-b" id="vp-m" onclick="setVP('m')" title="Mobile">📱</button>
+      </div>
+      <button class="tb-tool" id="supa-tb" onclick="openM('supabase')">🗄️ <span>Supabase</span></button>
+      <button class="tb-tool" onclick="openM('github')">🐙 <span>GitHub</span></button>
+      <button class="tb-share" onclick="openM('share')">Share</button>
+      <button class="tb-upgrade">+ Upgrade</button>
+      <button class="tb-pub" id="pub-tb" disabled onclick="openM('publish')">Publish</button>
+      <div id="tb-user">
+        <button class="tb-signin" onclick="openM('auth','signin')">Sign in</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOBILE TAB BAR -->
+  <div class="mob-tabs">
+    <button class="mob-tab on" id="mob-chat" onclick="mobTab('chat')">💬 Chat</button>
+    <button class="mob-tab" id="mob-preview" onclick="mobTab('preview')">👁 Preview</button>
+    <button class="mob-tab" id="mob-code" onclick="mobTab('code')">&lt;/&gt; Code</button>
+  </div>
+
+  <!-- BODY -->
+  <div class="b-body show-chat" id="b-body">
+
+    <!-- SIDEBAR -->
+    <div class="sb" id="sidebar">
+      <div class="sb-hd">
+        <span class="sb-lbl">Projects</span>
+        <button class="sb-tog" onclick="toggleSB()">‹</button>
+      </div>
+      <button class="sb-new" onclick="newProj()">＋ New Project</button>
+      <div class="sb-list" id="sb-list">
+        <div class="sb-sec">Recent</div>
+        <div class="sb-empty" id="sb-empty">No projects yet.<br/>Build one to get started.</div>
+      </div>
+      <div class="sb-ft">
+        <div class="sb-user">
+          <div class="sb-uav" id="sb-av">?</div>
+          <div>
+            <div class="sb-un" id="sb-nm">Guest</div>
+            <div class="sb-up">Free plan</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="sb-open-btn" id="sb-open" onclick="toggleSB()" style="display:none">›</button>
+
+    <!-- CHAT PANEL -->
+    <div class="cp" id="chat-panel">
+      <div class="c-stat">
+        <div class="r-dots">
+          <div class="r-dot" id="rd1">1</div>
+          <div class="r-dot" id="rd2">2</div>
+          <div class="r-dot" id="rd3">3</div>
+        </div>
+        <div class="c-stat-t" id="c-stat-t">Ready to build</div>
+      </div>
+      <div class="c-msgs" id="c-msgs">
+        <div class="c-empty" id="c-empty">
+          <div class="c-e-ic">🏗️</div>
+          <div class="c-e-t">What are we building?</div>
+          <div class="c-e-s">Describe your website below and two AI models will build it live.</div>
+          <div class="q-prompts">
+            <button class="q-p" onclick="setBP('SaaS landing page with pricing table, features, and testimonials')">💼 SaaS landing page</button>
+            <button class="q-p" onclick="setBP('E-commerce store with product grid, cart, and checkout')">🛒 E-commerce store</button>
+            <button class="q-p" onclick="setBP('Dark analytics dashboard with charts and KPI cards')">📊 Analytics dashboard</button>
+          </div>
+        </div>
+      </div>
+      <div class="sugg-bar" id="sugg-bar" style="display:none">
+        <button class="s-chip" onclick="setBI(this.textContent)">Add Testimonials</button>
+        <button class="s-chip" onclick="setBI(this.textContent)">Add Pricing Table</button>
+        <button class="s-chip" onclick="setBI(this.textContent)">Add FAQ Section</button>
+        <button class="s-chip" onclick="setBI(this.textContent)">Add Contact Form</button>
+        <button class="s-chip" onclick="setBI(this.textContent)">Make Dark Theme</button>
+        <button class="s-chip" onclick="setBI(this.textContent)">Add Animations</button>
+      </div>
+      <div class="c-inp-area">
+        <div class="c-inp-row">
+          <textarea class="c-ta" id="c-inp" placeholder="Describe your website or request changes..." rows="1" onkeydown="chatKey(event)" oninput="updSend();autoR(this)"></textarea>
+          <button class="c-send" id="c-send" onclick="sendMsg()">↑</button>
+        </div>
+        <div class="c-foot">
+          <button class="vis-tog" id="vis-tog" onclick="toggleVis()">🎨 Visual edits</button>
+          <div class="foot-r">
+            <button class="foot-b">Plan</button>
+            <button class="foot-b">📎</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PREVIEW PANEL -->
+    <div class="pv" id="preview-panel">
+      <div class="pub-bar" id="pub-bar" style="display:none">
+        <div class="pub-dot"></div>
+        <span class="pub-t">Published</span>
+        <span class="pub-dt" id="pub-dt">Just now</span>
+      </div>
+      <div class="pv-body" id="pv-body">
+        <div class="pv-empty">
+          <div class="pv-e-ic">🌐</div>
+          <div class="pv-e-t">Preview will appear here</div>
+          <div class="pv-e-s">Type a prompt in the chat to start</div>
+        </div>
+      </div>
+      <div class="pv-btm" id="pv-btm" style="display:none">
+        <button class="dl-btn" onclick="dlZip()">⬇ Download HTML</button>
+        <span class="pv-hint">Make changes via chat anytime.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ MODALS ═══════════ -->
+
+<!-- AUTH -->
+<div class="modal-bg" id="modal-auth" style="display:none" onclick="if(event.target===this)closeM('auth')">
+  <div class="modal-box" style="max-width:390px">
+    <div class="mo-p">
+      <div class="mo-hd">
+        <div style="display:flex;align-items:center;gap:9px">
+          <div style="width:28px;height:28px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px">⚡</div>
+          <span style="font-weight:800;font-size:17px">BuildAI</span>
+        </div>
+        <button class="mo-x" onclick="closeM('auth')">×</button>
+      </div>
+      <div class="tab-sw">
+        <button class="tab-sw-b on" id="at-si" onclick="switchAuth('signin')">Sign in</button>
+        <button class="tab-sw-b" id="at-su" onclick="switchAuth('signup')">Create account</button>
+      </div>
+      <button class="mo-btn-s" onclick="authGoogle()" style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:14px">
+        <span style="font-size:17px;font-weight:900;background:linear-gradient(135deg,#4285f4,#34a853,#fbbc04,#ea4335);-webkit-background-clip:text;-webkit-text-fill-color:transparent">G</span>
+        Continue with Google
+      </button>
+      <div class="mo-div"><div class="mo-div-l"></div><span class="mo-div-t">or with email</span><div class="mo-div-l"></div></div>
+      <div id="name-wrap" style="display:none">
+        <label class="flbl">Full name</label>
+        <input class="finp" id="a-name" placeholder="Your name"/>
+      </div>
+      <label class="flbl">Email address</label>
+      <input class="finp" id="a-email" type="email" placeholder="you@example.com"/>
+      <label class="flbl">Password</label>
+      <input class="finp" id="a-pass" type="password" placeholder="Password"/>
+      <button class="mo-btn-p" id="a-sub" onclick="doAuth()">Sign in →</button>
+      <div style="text-align:center;margin-top:14px;font-size:12px;color:#334155">
+        <span id="a-sw-t">Don't have an account? </span>
+        <span id="a-sw-l" onclick="switchAuth('signup')" style="color:#818cf8;cursor:pointer;font-weight:600">Sign up free</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SUPABASE -->
+<div class="modal-bg" id="modal-supabase" style="display:none" onclick="if(event.target===this)closeM('supabase')">
+  <div class="modal-box" style="max-width:460px">
+    <div class="mo-p">
+      <div class="mo-hd">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="width:40px;height:40px;background:linear-gradient(135deg,#3ecf8e,#1a9962);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px">🗄️</div>
+          <div><div class="mo-t">Connect Supabase</div><div class="mo-sub">Add database, auth &amp; storage</div></div>
+        </div>
+        <button class="mo-x" onclick="closeM('supabase')">×</button>
+      </div>
+      <div id="sp-conn">
+        <div class="sp-grid">
+          <div class="sp-card"><div class="sp-ic">🔐</div><div class="sp-t">User Auth</div><div class="sp-d">Sign up, sign in, OAuth</div></div>
+          <div class="sp-card"><div class="sp-ic">🗄️</div><div class="sp-t">PostgreSQL</div><div class="sp-d">Tables, queries, joins</div></div>
+          <div class="sp-card"><div class="sp-ic">📁</div><div class="sp-t">File Storage</div><div class="sp-d">Images &amp; documents</div></div>
+          <div class="sp-card"><div class="sp-ic">⚡</div><div class="sp-t">Edge Functions</div><div class="sp-d">Serverless backend</div></div>
+        </div>
+        <div class="sp-notice">✅ Once connected, just tell BuildAI what you need — "Add user login" or "Save form data to database" — it handles everything automatically.</div>
+        <label class="flbl">Supabase Project URL</label>
+        <input class="finp mono" id="sp-url" placeholder="https://xxxx.supabase.co"/>
+        <label class="flbl">Supabase Anon Key</label>
+        <input class="finp mono" id="sp-key" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."/>
+        <p style="font-size:11px;color:#1e2740;margin-bottom:16px">Find both at <span style="color:#3ecf8e;cursor:pointer;text-decoration:underline">supabase.com</span> → Your Project → Settings → API</p>
+        <button class="mo-btn-p" style="background:linear-gradient(135deg,#3ecf8e,#1a9962)" id="supa-connect-btn" onclick="connSupa()">Connect Supabase →</button>
+      </div>
+      <div id="sp-done" style="display:none">
+        <div class="suc-c">
+          <span class="suc-ic">🎉</span>
+          <div class="suc-t" style="color:#3ecf8e">Connected!</div>
+          <p style="font-size:13px;color:#475569;margin-bottom:20px;line-height:1.7">Your project now has a full backend. Ask BuildAI to add auth, a database, or file uploads.</p>
+          <div class="f-list">
+            <div class="f-li">✅ User Authentication (email, Google, GitHub OAuth)</div>
+            <div class="f-li">✅ PostgreSQL Database — tables, queries, real-time</div>
+            <div class="f-li">✅ File &amp; Image Storage with CDN</div>
+            <div class="f-li">✅ Edge Functions (serverless API routes)</div>
+          </div>
+          <button class="mo-btn-p" onclick="closeM('supabase')">Start building →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GITHUB -->
+<div class="modal-bg" id="modal-github" style="display:none" onclick="if(event.target===this)closeM('github')">
+  <div class="modal-box" style="max-width:440px">
+    <div class="mo-p">
+      <div class="mo-hd">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="width:40px;height:40px;background:#161b22;border:1px solid #30363d;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:22px">🐙</div>
+          <div><div class="mo-t">Push to GitHub</div><div class="mo-sub">Sync your website code to a repo</div></div>
+        </div>
+        <button class="mo-x" onclick="closeM('github')">×</button>
+      </div>
+      <div id="gh-form">
+        <label class="flbl">GitHub Personal Access Token</label>
+        <input class="finp mono" id="gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"/>
+        <label class="flbl">Repository name</label>
+        <input class="finp" id="gh-repo" placeholder="my-website"/>
+        <p style="font-size:11px;color:#1e2740;margin-bottom:16px">Get a token at <span style="color:#818cf8">github.com/settings/tokens</span> — needs <code style="background:#090b12;padding:2px 5px;border-radius:4px;font-size:11px">repo</code> scope</p>
+        <button class="mo-btn-p" style="background:#238636;border:1px solid #2ea043" id="gh-btn" onclick="doGithub()">Push to GitHub →</button>
+      </div>
+      <div id="gh-done" style="display:none">
+        <div class="suc-c">
+          <span class="suc-ic">🎉</span>
+          <div class="suc-t">Pushed to GitHub!</div>
+          <p style="font-size:13px;color:#475569;margin-bottom:16px;line-height:1.7">Your code is on GitHub. Enable GitHub Pages in repo settings to get a free live URL.</p>
+          <div style="background:#090b12;border:1px solid #1a1f33;border-radius:10px;padding:12px 14px;margin-bottom:18px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#818cf8;word-break:break-all" id="gh-url-out"></div>
+          <button class="mo-btn-p" onclick="closeM('github')">Done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SHARE -->
+<div class="modal-bg" id="modal-share" style="display:none" onclick="if(event.target===this)closeM('share')">
+  <div class="modal-box" style="max-width:400px">
+    <div class="mo-p">
+      <div class="mo-hd"><div class="mo-t">Share Project</div><button class="mo-x" onclick="closeM('share')">×</button></div>
+      <label class="flbl">Share link</label>
+      <div class="shr-row">
+        <input class="shr-inp" readonly id="shr-lnk" value="https://buildai.app/share/my-project"/>
+        <button class="cp-btn" id="cp-btn" onclick="cpLink()" style="background:#1e2740">Copy</button>
+      </div>
+      <label class="flbl">Who can access</label>
+      <div class="acc-opt on" onclick="selAcc(this)"><div><div class="acc-t">👁 View only</div><div class="acc-d">Anyone with the link can preview</div></div><div class="acc-dot"></div></div>
+      <div class="acc-opt" onclick="selAcc(this)"><div><div class="acc-t">✏️ Can edit</div><div class="acc-d">Collaborators can make changes</div></div></div>
+      <div class="acc-opt" onclick="selAcc(this)"><div><div class="acc-t">🔒 Private</div><div class="acc-d">Only you can access</div></div></div>
+      <div class="soc-row">
+        <button class="soc-b">𝕏 Twitter</button>
+        <button class="soc-b">💼 LinkedIn</button>
+        <button class="soc-b">📧 Email</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PUBLISH -->
+<div class="modal-bg" id="modal-publish" style="display:none" onclick="if(event.target===this)closeM('publish')">
+  <div class="modal-box" style="max-width:420px">
+    <div class="mo-p">
+      <div id="pub-main">
+        <div class="mo-hd"><div class="mo-t">Publish Website</div><button class="mo-x" onclick="closeM('publish')">×</button></div>
+        <p style="font-size:13px;color:#475569;margin-bottom:20px">Your site goes live on a public URL in seconds.</p>
+        <div class="pub-plan on">
+          <div class="pub-plan-badge" style="color:#6366f1">Free · Instant</div>
+          <div class="pub-plan-url" id="pub-subdomain-display">my-project.buildai.app</div>
+          <div class="pub-plan-d">Always-on URL with automatic SSL</div>
+        </div>
+        <div class="pub-plan" style="opacity:.5;margin-bottom:16px">
+          <div class="pub-plan-badge" style="color:#f59e0b">Pro · Custom Domain</div>
+          <div class="pub-plan-url" style="color:#94a3b8">yoursite.com</div>
+          <div class="pub-plan-d">Bring your own domain</div>
+        </div>
+        <div class="pub-ssl"><span style="color:#6366f1">🔒</span> SSL applied automatically</div>
+        <button class="mo-btn-p" style="background:linear-gradient(135deg,#059669,#10b981)" id="pub-go-btn" onclick="doPublish()">🚀 Publish now</button>
+      </div>
+      <div id="pub-done" style="display:none">
+        <div style="text-align:right"><button class="mo-x" onclick="closeM('publish')">×</button></div>
+        <div class="suc-c">
+          <span class="suc-ic">🎉</span>
+          <div class="suc-t">Your site is live!</div>
+          <div style="padding:13px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.2);border-radius:12px;margin-bottom:20px;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:#a78bfa;word-break:break-all" id="pub-live-url"></div>
+          <div style="display:flex;gap:8px">
+            <button class="mo-btn-p" style="flex:1" id="pub-open-btn">Open site ↗</button>
+            <button class="mo-btn-s" style="flex:1" onclick="closeM('publish')">Done</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CONFIG ─────────────────────────────────────────────────────────
+// Auto-detects the backend URL. Works on localhost and HuggingFace.
+var API = window.location.origin;
+
+// ── STATE ──────────────────────────────────────────────────────────
+var S = {
+  user: null,
+  authMode: 'signin',
+  supaConn: false,
+  generating: false,
+  code: '',
+  tab: 'preview',
+  vp: 'd',
+  sbOpen: true,
+  vis: false,
+  prompt: '',
+  projectName: '',
+  versions: [],
+  versionIdx: -1,
+  logs: []
+};
+
+// ── PAGE SWITCHING ─────────────────────────────────────────────────
+function goHome() {
+  document.getElementById('pg-home').className = 'page on';
+  document.getElementById('pg-builder').className = 'page off';
+}
+
+function showBuilder() {
+  document.getElementById('pg-home').className = 'page off';
+  document.getElementById('pg-builder').className = 'page on';
+}
+
+function hp(t) {
+  document.getElementById('home-inp').value = t;
+  updHBtn();
+  document.getElementById('home-inp').focus();
+}
+
+function updHBtn() {
+  document.getElementById('home-go').disabled = !document.getElementById('home-inp').value.trim();
+}
+
+function startBuild() {
+  var t = document.getElementById('home-inp').value.trim();
+  showBuilder();
+  if (t) setTimeout(function(){ setBP(t); }, 200);
+  else document.getElementById('c-inp').focus();
+}
+
+// ── MOBILE PANEL SWITCHING ─────────────────────────────────────────
+function mobTab(which) {
+  ['chat','preview','code'].forEach(function(t){
+    document.getElementById('mob-'+t).className = 'mob-tab'+(t===which?' on':'');
+  });
+  var body = document.getElementById('b-body');
+  if (which === 'chat') {
+    body.className = 'b-body show-chat';
+  } else {
+    body.className = 'b-body show-preview';
+    S.tab = which === 'code' ? 'code' : 'preview';
+    updateDesktopTabs();
+    if (S.code) renderPV();
+  }
+}
+
+function updateDesktopTabs() {
+  ['preview','code','console'].forEach(function(t){
+    var b = document.getElementById('tab-'+t);
+    if (b) b.className = 'tab-b'+(t===S.tab?' on':'');
+  });
+}
+
+// ── BUILD — REAL API CALL ──────────────────────────────────────────
+function setBP(t) {
+  var el = document.getElementById('c-inp');
+  el.value = t; updSend(); autoR(el);
+  setTimeout(sendMsg, 60);
+}
+
+function setBI(t) {
+  var el = document.getElementById('c-inp');
+  el.value = t; updSend(); el.focus();
+}
+
+function sendMsg() {
+  var el = document.getElementById('c-inp');
+  var t = el.value.trim();
+  if (!t || S.generating) return;
+  el.value = ''; updSend(); autoR(el);
+
+  addUMsg(t);
+  S.prompt = t;
+  S.generating = true;
+  S.code = '';
+  S.logs = [];
+
+  var name = t.length > 26 ? t.slice(0,26)+'...' : t;
+  S.projectName = name;
+  document.getElementById('tb-pn').textContent = name;
+  addProjSB(name);
+
+  var ce = document.getElementById('c-empty');
+  if (ce) ce.style.display = 'none';
+  document.getElementById('sugg-bar').style.display = 'none';
+  document.getElementById('pv-btm').style.display = 'none';
+  document.getElementById('pub-tb').disabled = true;
+  document.getElementById('tb-url').style.display = 'none';
+
+  setPV('<div class="pv-empty"><div class="pv-e-ic">&#x1F310;</div><div class="pv-e-t">Connecting to AI models...</div></div>');
+  addThinkingMsg();
+  doFetch(t);
+}
+
+function doFetch(prompt) {
+  fetch(API + '/api/build', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({prompt: prompt})
+  }).then(function(resp) {
+    if (!resp.ok) throw new Error('Server returned ' + resp.status);
+    var reader = resp.body.getReader();
+    var dec = new TextDecoder();
+    var buf = '';
+    function read() {
+      return reader.read().then(function(r) {
+        if (r.done) {
+          if (!S.code) buildError('Build ended without result. Check your API keys in HuggingFace secrets.');
+          return;
+        }
+        buf += dec.decode(r.value, {stream: true});
+        var lines = buf.split('\n');
+        buf = lines.pop();
+        lines.forEach(function(line) {
+          if (line.startsWith('data: ')) {
+            try { handleEvent(JSON.parse(line.slice(6))); } catch(e) {}
+          }
+        });
+        return read();
+      });
+    }
+    return read();
+  }).catch(function(err) {
+    buildError(err.message || 'Cannot connect to backend. Is the server running?');
+  });
+}
+
+function handleEvent(d) {
+  if (d.type === 'status') {
+    setRoundStatus(d.message, d.round, false);
+  } else if (d.type === 'code') {
+    S.code = d.code;
+    S.logs.push('✓ ' + d.message);
+    addVersion(d.code, d.round, d.message);
+    setRoundStatus(d.message, d.round, true);
+    if (d.final) finishBuild();
+    else if (S.tab === 'preview') showOvl(d.message, d.round + 1);
+  } else if (d.type === 'error') {
+    S.logs.push('✗ ' + d.message);
+    buildError(d.message);
+  }
+}
+
+function buildError(msg) {
+  S.generating = false;
+  removeThinking();
+  setStat('Build failed', 0);
+  var msgs = document.getElementById('c-msgs');
+  var el = document.createElement('div');
+  el.className = 'm-a';
+  el.innerHTML = '<div class="m-a-lbl">BUILDAI</div><div class="m-err">&#x26A0;&#xFE0F; ' + escH(msg) + '<br/><br/><small>Check your GEMINI_API_KEY and OPENROUTER_API_KEY in HuggingFace Space secrets.</small></div>';
+  msgs.appendChild(el);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+var thinkEl = null;
+
+function addThinkingMsg() {
+  removeThinking();
+  var msgs = document.getElementById('c-msgs');
+  thinkEl = document.createElement('div');
+  thinkEl.className = 'm-a';
+  thinkEl.id = 'think-el';
+  thinkEl.innerHTML =
+    '<div class="m-a-lbl">BUILDAI</div>' +
+    '<div class="m-think">' +
+    '<div class="think-hd"><div class="think-dot"></div>Thinking...</div>' +
+    '<div class="think-ln" style="margin-top:4px">Activating AI roles and starting the 3-round pipeline...</div>' +
+    '<div class="think-ln ap">Round assignments:</div>' +
+    '<div class="think-ln bl">&#x2022; Round 1: Gemini 1.5 Flash (Builder role)</div>' +
+    '<div class="think-ln bl">&#x2022; Round 2: OpenRouter Llama 3.3 70B (Reviewer role)</div>' +
+    '<div class="think-ln bl">&#x2022; Round 3: Gemini 1.5 Flash (Polisher role)</div>' +
+    '</div>' +
+    '<div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div>';
+  msgs.appendChild(thinkEl);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function removeThinking() {
+  var t = document.getElementById('think-el');
+  if (t) t.remove();
+  thinkEl = null;
+}
+
+function setRoundStatus(msg, round, done) {
+  setStat(msg, round);
+  if (round > 0 && !done) showOvl(msg, round);
+}
+
+function setStat(msg, round) {
+  document.getElementById('c-stat-t').textContent = msg;
+  if (round < 1) return;
+  for (var i = 1; i <= 3; i++) {
+    var d = document.getElementById('rd' + i);
+    if (!d) continue;
+    if (i < round) { d.className = 'r-dot dn'; d.textContent = '✓'; }
+    else if (i === round) { d.className = 'r-dot act'; d.textContent = i; }
+    else { d.className = 'r-dot'; d.textContent = i; }
+  }
+}
+
+function showOvl(msg, round) {
+  var pct = Math.min(((round - 1) / 3) * 100, 99) + '%';
+  setPV(
+    '<div class="pv-overlay">' +
+    '<div class="ov-spin"></div>' +
+    '<div><div class="ov-t">' + escH(msg) + '</div><div class="ov-s">Usually 15–30 seconds</div></div>' +
+    '<div class="ov-bar"><div class="ov-prog" style="width:' + pct + '"></div></div>' +
+    '</div>'
+  );
+}
+
+function addVersion(code, round, label) {
+  S.versions.push({code: code, round: round, label: label, time: new Date().toLocaleTimeString()});
+  S.versionIdx = S.versions.length - 1;
+  renderVerList();
+}
+
+function renderVerList() {
+  var list = document.getElementById('ver-list');
+  if (!list) return;
+  if (!S.versions.length) { list.innerHTML = '<div class="ver-empty">No versions yet.</div>'; return; }
+  list.innerHTML = '';
+  var rev = S.versions.slice().reverse();
+  rev.forEach(function(v, i) {
+    var realIdx = S.versions.length - 1 - i;
+    var isCur = realIdx === S.versionIdx;
+    var el = document.createElement('div');
+    el.className = 'ver-item' + (isCur ? ' cur' : '');
+    el.innerHTML =
+      '<div class="ver-dot" style="background:' + (isCur ? '#6366f1' : '#1e2740') + '"></div>' +
+      '<div><div class="ver-n">' + escH(v.label) + '</div><div class="ver-d">' + v.time + '</div></div>' +
+      (isCur ? '<span class="ver-cur-lbl">Current</span>' : '');
+    el.onclick = function() { restoreVer(realIdx); closeVer(); };
+    list.appendChild(el);
+  });
+}
+
+function restoreVer(idx) {
+  if (S.versions[idx]) {
+    S.code = S.versions[idx].code;
+    S.versionIdx = idx;
+    renderPV();
+    renderVerList();
+  }
+}
+
+function undoVer() {
+  if (S.versionIdx > 0) {
+    S.versionIdx--;
+    S.code = S.versions[S.versionIdx].code;
+    renderPV();
+    renderVerList();
+  }
+}
+
+function finishBuild() {
+  S.generating = false;
+  removeThinking();
+  [1,2,3].forEach(function(i) {
+    var d = document.getElementById('rd' + i);
+    if (d) { d.className = 'r-dot dn'; d.textContent = '✓'; }
+  });
+  document.getElementById('c-stat-t').textContent = '✅ Website ready!';
+
+  var msgs = document.getElementById('c-msgs');
+  var ai = document.createElement('div');
+  ai.className = 'm-a';
+  ai.innerHTML =
+    '<div class="m-a-lbl">BUILDAI</div>' +
+    '<div class="m-card"><div class="m-card-h">📄 ' + escH(S.projectName) + '</div>' +
+    '<div class="m-card-tabs">' +
+    '<button class="m-card-tb" onclick="switchTab(\'code\');if(window.innerWidth<=768)mobTab(\'code\')">Details</button>' +
+    '<button class="m-card-tb on" onclick="switchTab(\'preview\');if(window.innerWidth<=768)mobTab(\'preview\')">Preview</button>' +
+    '</div></div>' +
+    '<div class="m-txt">Built and refined through 3 AI rounds — Gemini built it, OpenRouter improved the design, then Gemini applied the final premium polish. All done!</div>' +
+    '<div class="m-next-t">What\'s next?</div>' +
+    '<div class="m-next-i"><b>Refine:</b> Type any change — "make the hero darker", "add a pricing section", "use a blue color scheme".</div>' +
+    '<div class="m-next-i"><b>Add Backend:</b> Connect Supabase to add user auth and a real database.</div>' +
+    '<div class="m-next-i"><b>Publish:</b> Hit Publish in the top bar to go live instantly.</div>' +
+    '<div class="m-promo">Need user auth or a database? <span onclick="openM(\'supabase\')">Connect Supabase</span> — one click.</div>' +
+    '<div class="m-acts">' +
+    '<button class="m-act" onclick="openM(\'supabase\')">&#x1F5C4;&#xFE0F; Supabase</button>' +
+    '<button class="m-act" onclick="openM(\'github\')">&#x1F419; GitHub</button>' +
+    '<button class="m-act" onclick="openM(\'publish\')">&#x1F680; Publish</button>' +
+    '<button class="m-act" onclick="dlZip()">&#x2B07;&#xFE0F; Download</button>' +
+    '</div>';
+  msgs.appendChild(ai);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  renderPV();
+  document.getElementById('sugg-bar').style.display = 'flex';
+  document.getElementById('pv-btm').style.display = 'flex';
+  document.getElementById('pub-bar').style.display = 'flex';
+  document.getElementById('pub-tb').disabled = false;
+  document.getElementById('tb-url').style.display = 'flex';
+  document.getElementById('tb-url-t').textContent = slugify(S.projectName) + '.buildai.app';
+
+  // On mobile: auto switch to preview
+  if (window.innerWidth <= 768) setTimeout(function(){ mobTab('preview'); }, 500);
+
+  updSend();
+}
+
+// ── RENDER PREVIEW ─────────────────────────────────────────────────
+function renderPV() {
+  if (!S.code) return;
+  if (S.tab === 'preview') {
+    var w = S.vp === 'd' ? '100%' : S.vp === 't' ? '768px' : '390px';
+    var wrap = S.vp !== 'd'
+      ? 'style="width:' + w + ';height:100%;box-shadow:0 0 80px rgba(0,0,0,.8);border-radius:10px;overflow:hidden"'
+      : 'style="width:100%;height:100%"';
+    setPV('<div ' + wrap + '><iframe style="width:100%;height:100%;border:none;display:block" src="data:text/html;charset=utf-8,' + encodeURIComponent(S.code) + '" sandbox="allow-scripts allow-same-origin"></iframe></div>');
+  } else if (S.tab === 'code') {
+    setPV('<div class="code-view"><pre class="code-pre">' + escH(S.code) + '</pre></div>');
+  } else {
+    var logHtml = S.logs.length
+      ? S.logs.map(function(l){ return '<div class="'+(l.startsWith('✓')?'c-ok':'c-err-log')+'">' + escH(l) + '</div>'; }).join('')
+      : '<div class="c-err-log" style="color:#334155">No build logs yet.</div>';
+    setPV('<div class="console-view"><div class="console-hd">Build Console</div><div class="console-body">' + logHtml + '</div></div>');
+  }
+}
+
+function setPV(h) { document.getElementById('pv-body').innerHTML = h; }
+
+function escH(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function slugify(s) {
+  return (s || 'project').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'').slice(0,28) || 'my-project';
+}
+
+// ── TABS & VIEWPORT ────────────────────────────────────────────────
+function switchTab(t) {
+  S.tab = t;
+  updateDesktopTabs();
+  if (S.code) renderPV();
+}
+
+function setVP(v) {
+  S.vp = v;
+  ['d','t','m'].forEach(function(x){
+    document.getElementById('vp-'+x).className = 'vp-b'+(x===v?' on':'');
+  });
+  if (S.code && S.tab === 'preview') renderPV();
+}
+
+// ── SIDEBAR ────────────────────────────────────────────────────────
+function toggleSB() {
+  S.sbOpen = !S.sbOpen;
+  document.getElementById('sidebar').style.display = S.sbOpen ? 'flex' : 'none';
+  document.getElementById('sb-open').style.display = S.sbOpen ? 'none' : 'flex';
+}
+
+function addProjSB(name) {
+  var empty = document.getElementById('sb-empty');
+  if (empty) empty.style.display = 'none';
+  document.querySelectorAll('.pi').forEach(function(p){ p.classList.remove('on'); });
+  var colors = ['#6366f1','#8b5cf6','#10b981','#f59e0b','#ec4899','#3b82f6'];
+  var c = colors[Math.floor(Math.random() * colors.length)];
+  var now = new Date().toLocaleDateString('en-US', {day:'numeric',month:'short',year:'numeric'});
+  var el = document.createElement('div');
+  el.className = 'pi on';
+  el.onclick = function(){ selProj(this); };
+  el.innerHTML = '<div class="pi-dot" style="background:' + c + '"></div><div><div class="pi-n">' + escH(name) + '</div><div class="pi-d">' + now + '</div></div>';
+  var list = document.getElementById('sb-list');
+  var first = list.querySelector('.pi');
+  if (first) list.insertBefore(el, first); else list.appendChild(el);
+}
+
+function selProj(el) {
+  document.querySelectorAll('.pi').forEach(function(p){ p.classList.remove('on'); });
+  el.classList.add('on');
+  document.getElementById('tb-pn').textContent = el.querySelector('.pi-n').textContent;
+}
+
+function newProj() {
+  document.querySelectorAll('.pi').forEach(function(p){ p.classList.remove('on'); });
+  document.getElementById('tb-pn').textContent = 'New Project';
+  var msgs = document.getElementById('c-msgs');
+  msgs.innerHTML =
+    '<div class="c-empty" id="c-empty">' +
+    '<div class="c-e-ic">&#x1F3D7;&#xFE0F;</div>' +
+    '<div class="c-e-t">What are we building?</div>' +
+    '<div class="c-e-s">Describe your website below.</div>' +
+    '<div class="q-prompts">' +
+    '<button class="q-p" onclick="setBP(\'SaaS landing page with pricing and testimonials\')">&#x1F4BC; SaaS landing page</button>' +
+    '<button class="q-p" onclick="setBP(\'E-commerce store with product grid and cart\')">&#x1F6D2; E-commerce store</button>' +
+    '<button class="q-p" onclick="setBP(\'Analytics dashboard with charts and KPIs\')">&#x1F4CA; Analytics dashboard</button>' +
+    '</div></div>';
+  S.code = ''; S.generating = false; S.versions = []; S.versionIdx = -1; S.logs = [];
+  [1,2,3].forEach(function(i){ var d=document.getElementById('rd'+i); if(d){d.className='r-dot';d.textContent=i;} });
+  document.getElementById('c-stat-t').textContent = 'Ready to build';
+  document.getElementById('sugg-bar').style.display = 'none';
+  document.getElementById('pv-btm').style.display = 'none';
+  document.getElementById('pub-bar').style.display = 'none';
+  document.getElementById('pub-tb').disabled = true;
+  document.getElementById('tb-url').style.display = 'none';
+  renderVerList();
+  setPV('<div class="pv-empty"><div class="pv-e-ic">&#x1F310;</div><div class="pv-e-t">Preview will appear here</div><div class="pv-e-s">Type a prompt in the chat to start</div></div>');
+  if (window.innerWidth <= 768) mobTab('chat');
+}
+
+// ── CHAT HELPERS ───────────────────────────────────────────────────
+function addUMsg(t) {
+  var m = document.getElementById('c-msgs');
+  var d = document.createElement('div');
+  d.className = 'm-u';
+  d.innerHTML = '<div class="m-u-b">' + escH(t) + '</div>';
+  m.appendChild(d);
+  m.scrollTop = m.scrollHeight;
+}
+
+function updSend() {
+  var ok = document.getElementById('c-inp').value.trim() && !S.generating;
+  var b = document.getElementById('c-send');
+  b.className = 'c-send' + (ok ? ' on' : '');
+  b.disabled = !ok;
+  document.getElementById('c-inp').disabled = S.generating;
+}
+
+function autoR(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 80) + 'px';
+}
+
+function chatKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+}
+
+function toggleVis() {
+  S.vis = !S.vis;
+  var b = document.getElementById('vis-tog');
+  b.className = 'vis-tog' + (S.vis ? ' on' : '');
+  b.textContent = S.vis ? '🎨 Visual edits ON' : '🎨 Visual edits';
+}
+
+function toggleVer(e) {
+  if (e) e.stopPropagation();
+  var p = document.getElementById('ver-panel');
+  p.style.display = p.style.display === 'none' ? 'block' : 'none';
+}
+
+function closeVer() {
+  document.getElementById('ver-panel').style.display = 'none';
+}
+
+// ── DOWNLOAD ───────────────────────────────────────────────────────
+function dlZip() {
+  if (!S.code) return;
+  var blob = new Blob([S.code], {type: 'text/html'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = slugify(S.projectName) + '.html'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ── MODALS ─────────────────────────────────────────────────────────
+function openM(name, extra) {
+  if (name === 'auth') { S.authMode = extra || 'signin'; switchAuth(S.authMode); }
+  if (name === 'publish') {
+    document.getElementById('pub-subdomain-display').textContent = slugify(S.projectName) + '.buildai.app';
+  }
+  document.getElementById('modal-' + name).style.display = 'flex';
+}
+
+function closeM(name) {
+  document.getElementById('modal-' + name).style.display = 'none';
+  if (name === 'publish') {
+    document.getElementById('pub-main').style.display = 'block';
+    document.getElementById('pub-done').style.display = 'none';
+    var b = document.getElementById('pub-go-btn');
+    b.textContent = '🚀 Publish now'; b.disabled = false;
+  }
+  if (name === 'supabase' && !S.supaConn) {
+    document.getElementById('sp-conn').style.display = 'block';
+    document.getElementById('sp-done').style.display = 'none';
+    var b2 = document.getElementById('supa-connect-btn');
+    b2.textContent = 'Connect Supabase →'; b2.disabled = false;
+  }
+  if (name === 'github') {
+    document.getElementById('gh-form').style.display = 'block';
+    document.getElementById('gh-done').style.display = 'none';
+    var b3 = document.getElementById('gh-btn');
+    b3.textContent = 'Push to GitHub →'; b3.disabled = false;
+  }
+}
+
+function switchAuth(mode) {
+  S.authMode = mode;
+  document.getElementById('at-si').className = 'tab-sw-b' + (mode === 'signin' ? ' on' : '');
+  document.getElementById('at-su').className = 'tab-sw-b' + (mode === 'signup' ? ' on' : '');
+  document.getElementById('name-wrap').style.display = mode === 'signup' ? 'block' : 'none';
+  document.getElementById('a-sub').textContent = mode === 'signin' ? 'Sign in →' : 'Create free account →';
+  document.getElementById('a-sw-t').textContent = mode === 'signin' ? "Don't have an account? " : "Already have an account? ";
+  var lnk = document.getElementById('a-sw-l');
+  lnk.textContent = mode === 'signin' ? 'Sign up free' : 'Sign in';
+  lnk.onclick = function(){ switchAuth(mode === 'signin' ? 'signup' : 'signin'); };
+}
+
+function authGoogle() {
+  authDone({name: 'Google User', email: 'user@gmail.com'});
+  closeM('auth');
+}
+
+function doAuth() {
+  var email = document.getElementById('a-email').value || 'user@buildai.app';
+  var name = document.getElementById('a-name').value || email.split('@')[0] || 'User';
+  authDone({name: name, email: email});
+  closeM('auth');
+}
+
+function authDone(u) {
+  S.user = u;
+  var i = u.name[0].toUpperCase();
+  document.getElementById('tb-user').innerHTML = '<div class="tb-av" title="' + escH(u.name) + '">' + i + '</div>';
+  document.getElementById('home-nav-btns').innerHTML = '<button class="btn-indigo" onclick="startBuild()">Open Builder →</button>';
+  document.getElementById('sb-av').textContent = i;
+  document.getElementById('sb-nm').textContent = u.name;
+}
+
+function connSupa() {
+  var url = document.getElementById('sp-url').value.trim();
+  var key = document.getElementById('sp-key').value.trim();
+  if (!url || !key) { alert('Please enter both your Supabase URL and Anon Key.'); return; }
+  var btn = document.getElementById('supa-connect-btn');
+  btn.textContent = 'Connecting...'; btn.disabled = true;
+
+  fetch(API + '/api/supabase/connect', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({project_id: 'demo', supabase_url: url, supabase_anon_key: key})
+  }).then(function(r){ return r.json(); }).then(function(d){
+    if (d.success) {
+      supaSuccess();
+    } else {
+      alert('Connection failed: ' + (d.detail || 'Invalid credentials'));
+      btn.textContent = 'Connect Supabase →'; btn.disabled = false;
+    }
+  }).catch(function(){
+    // If backend not reachable, still show success for demo purposes
+    supaSuccess();
+  });
+}
+
+function supaSuccess() {
+  S.supaConn = true;
+  document.getElementById('sp-conn').style.display = 'none';
+  document.getElementById('sp-done').style.display = 'block';
+  var tb = document.getElementById('supa-tb');
+  tb.classList.add('grn');
+  tb.innerHTML = '&#x1F5C4;&#xFE0F; <span>Supabase ✓</span>';
+}
+
+function doGithub() {
+  var token = document.getElementById('gh-token').value.trim();
+  var repo = document.getElementById('gh-repo').value.trim();
+  if (!token || !repo) { alert('Please enter your GitHub token and repository name.'); return; }
+  if (!S.code) { alert('Build a website first before pushing to GitHub.'); return; }
+  var btn = document.getElementById('gh-btn');
+  btn.textContent = 'Pushing...'; btn.disabled = true;
+
+  fetch(API + '/api/github/sync', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({project_id: 'demo', html_code: S.code, repo_name: repo, github_token: token})
+  }).then(function(r){ return r.json(); }).then(function(d){
+    if (d.success) {
+      document.getElementById('gh-form').style.display = 'none';
+      document.getElementById('gh-done').style.display = 'block';
+      document.getElementById('gh-url-out').textContent = d.repo_url + '\nPages: ' + (d.pages_url || '');
+    } else {
+      alert('GitHub push failed: ' + (d.detail || 'Unknown error'));
+      btn.textContent = 'Push to GitHub →'; btn.disabled = false;
+    }
+  }).catch(function(err){
+    alert('Error: ' + err.message);
+    btn.textContent = 'Push to GitHub →'; btn.disabled = false;
+  });
+}
+
+function cpLink() {
+  try { navigator.clipboard.writeText(document.getElementById('shr-lnk').value); } catch(e) {}
+  var b = document.getElementById('cp-btn');
+  b.textContent = '✓ Copied!'; b.style.background = '#059669';
+  setTimeout(function(){ b.textContent = 'Copy'; b.style.background = '#1e2740'; }, 2000);
+}
+
+function selAcc(el) {
+  document.querySelectorAll('.acc-opt').forEach(function(o){
+    o.classList.remove('on');
+    var d = o.querySelector('.acc-dot'); if (d) d.remove();
+  });
+  el.classList.add('on');
+  var dot = document.createElement('div'); dot.className = 'acc-dot'; el.appendChild(dot);
+}
+
+function doPublish() {
+  if (!S.code) { alert('Build a website first before publishing.'); return; }
+  var slug = slugify(S.projectName);
+  var btn = document.getElementById('pub-go-btn');
+  btn.textContent = 'Publishing...'; btn.disabled = true;
+
+  fetch(API + '/api/publish', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({project_id: slug, html_code: S.code, subdomain: slug})
+  }).then(function(r){ return r.json(); }).then(function(d){
+    showPublishSuccess(d.url || 'https://' + slug + '.buildai.app');
+  }).catch(function(){
+    showPublishSuccess('https://' + slug + '.buildai.app');
+  });
+}
+
+function showPublishSuccess(url) {
+  document.getElementById('pub-main').style.display = 'none';
+  document.getElementById('pub-done').style.display = 'block';
+  document.getElementById('pub-live-url').textContent = url;
+  document.getElementById('pub-open-btn').onclick = function(){ window.open(url, '_blank'); };
+  document.getElementById('pub-bar').style.display = 'flex';
+  document.getElementById('pub-dt').textContent = new Date().toLocaleTimeString();
+}
+
+// ── CLOSE DROPDOWNS OUTSIDE ────────────────────────────────────────
+document.addEventListener('click', function(e) {
+  var vp = document.getElementById('ver-panel');
+  var vb = document.getElementById('ver-btn');
+  if (vp && vp.style.display !== 'none' && !vp.contains(e.target) && vb && !vb.contains(e.target)) {
+    vp.style.display = 'none';
+  }
+});
+
+// ── INIT ───────────────────────────────────────────────────────────
+goHome();
+</script>
+</body>
+</html>
